@@ -1,19 +1,33 @@
 import {useState} from 'react'
 import {useNavigate} from 'react-router'
 import { findUserByUsername, addData } from '../service/service'
+import Alert from '../components/Alert'
 
 const Register = () => {
     const navigate = useNavigate()
     const [inputUsername, setInputUsername] = useState("")
     const [inputPassword, setInputPassword] = useState("")
+    const [toastAlert, setToastAlert] = useState({message : '', type : ''})
     const register = async (username, password) => {
         const user = await findUserByUsername(username)
         if(user){
-            alert(`User with username ${user.username} is already exist`)
+            console.log('already exist')
+            showAlert('alert-error', `User with username ${user.username} is already exist`)
         } else {
             await addData('User', {username : username, password : password})
-            alert('User succesfully registered')
+            showAlert('alert-success','User succesfully registered')
         }
+    }
+    const showAlert = (type, message) => {
+        setToastAlert({
+            type : type,
+            message : message
+        })
+        console.log(type, message)
+        document.getElementById("alert").classList.remove("hidden");
+        setTimeout(function () {
+            document.getElementById("alert").classList.add("hidden");
+        }, 2000);
     }
     return (
     <div className='flex flex-col justify-center items-center min-h-screen'>
@@ -54,6 +68,7 @@ const Register = () => {
             <button className="m-4 h-9 px-2 btn btn-outline cursor-pointer" onClick={()=>navigate('/login')} >Back</button>
             <button className="m-4 h-9 px-2 btn btn-neutral cursor-pointer" onClick={()=>register(inputUsername, inputPassword)} >Register</button>
         </div>
+        <Alert alert={toastAlert} />
     </div>
   )
 }

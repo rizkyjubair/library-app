@@ -1,11 +1,24 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { findUserByUsername } from '../service/service'
+import Alert from '../components/Alert'
 
 const Login = () => {
     let navigate = useNavigate()
     const [inputUsername, setInputUsername] = useState("")
     const [inputPassword, setInputPassword] = useState("")
+    const [toastAlert, setToastAlert] = useState({message : '', type : ''})
+    const showAlert = (type, message) => {
+        setToastAlert({
+            type : type,
+            message : message
+        })
+        console.log(type, message)
+        document.getElementById("alert").classList.remove("hidden");
+        setTimeout(function () {
+            document.getElementById("alert").classList.add("hidden");
+        }, 2000);
+    }
     const login = async (username, password) => {
         let user = await findUserByUsername(username)
         if(user){
@@ -16,10 +29,11 @@ const Login = () => {
                 localStorage.setItem('token', JSON.stringify(user))
                 navigate('/')
             }else{
-                alert('Wrong password')
+                console.log('wrong password')
+                showAlert('alert-error','Wrong password')
             }
         }else{
-            alert("User not found")
+            showAlert('alert-error',"User not found")
         }
     }
     return (
@@ -61,6 +75,7 @@ const Login = () => {
             <button className="m-4 h-9 px-2 btn btn-outline cursor-pointer" onClick={()=>navigate('/register')} >Register</button>
             <button className="m-4 h-9 px-2 btn btn-neutral cursor-pointer" onClick={()=>login(inputUsername, inputPassword)}>Login</button>
         </div>
+        <Alert alert={toastAlert} />
     </div>
   )
 }

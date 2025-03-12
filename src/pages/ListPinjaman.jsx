@@ -44,6 +44,12 @@ const ListPinjaman = () => {
         setCurrHistID(histID)
         document.getElementById('return-modal').showModal()
     }
+    const testAlert = () => {
+        document.getElementById("return-alert").classList.remove("hidden");
+        setTimeout(function () {
+            document.getElementById("return-alert").classList.add("hidden");
+        }, 5000);
+    }
     const TableRow = (props) => {
         return (
             <tr className="border-b border-stone-200 last:border-0">
@@ -79,6 +85,13 @@ const ListPinjaman = () => {
                 }
             </tbody>
         </table>
+        <button className='btn' onClick={()=>testAlert()}>Test Alert</button>
+        <div role="alert" className="alert alert-success hidden absolute" id='return-alert'>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Your purchase has been confirmed!</span>
+        </div>
         <dialog id="return-modal" className="modal">
             <div className="modal-box">
                 <h3 className="font-bold text-lg">Return Confirmation</h3>
