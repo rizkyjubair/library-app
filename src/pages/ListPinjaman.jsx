@@ -9,6 +9,7 @@ const ListPinjaman = () => {
     const navigate = useNavigate()
     const [user, setUser] = useState({username : '', userid : 0})
     const [listLoanedBook, setListLoanedBook] = useState([])
+    const [currHistID, setCurrHistID] = useState(0)
     const getUserData = () => {
         let data = localStorage.getItem('token')
         if(data){
@@ -37,7 +38,11 @@ const ListPinjaman = () => {
     const returnBookByHistId = async (historyid) => {
         await returnBook(historyid)
         await getLoanedBooks(user.userid)
-        alert('Book succesfully returned')
+        document.getElementById('return-modal').close()
+    }
+    const openModalReturnBook = (histID) => {
+        setCurrHistID(histID)
+        document.getElementById('return-modal').showModal()
     }
     const TableRow = (props) => {
         return (
@@ -46,19 +51,18 @@ const ListPinjaman = () => {
                 <td className="p-3">{props.book.bookname}</td>
                 <td className="p-3">{props.book.loandate.toLocaleString()}</td>
                 <td className="p-3">
-                    <button className="font-sans antialiased text-sm text-current font-medium hover:text-primary cursor-pointer" onClick={()=>returnBookByHistId(props.book.historyid)}>Return</button>
+                    <button className="btn btn-soft cursor-pointer" onClick={()=>openModalReturnBook(props.book.historyid)}>Return</button>
                 </td>
             </tr>
         )
     }
     return (
-    <div>
-        <div className='flex flex-row'>
-            <h1>List Book Loan by {user.username}</h1>
-            <button className="my-4 h-10 px-6 font-semibold rounded-md bg-black text-white cursor-pointer" onClick={()=>navigate('/')}>Back to Home</button>
-            <button className="my-4 h-10 px-6 font-semibold rounded-md bg-black text-white cursor-pointer" onClick={()=>getLoanedBooks()}>Get Loaned Book</button>
-        </div>
-        <table>
+    <div className='flex flex-col items-center min-h-screen w-screen p-4'>
+        <header className='flex flex-row justify-between w-full max-w-[900px]'>
+            <h1 className='font-semibold text-2xl'>List Book Loan by {user.username}</h1>
+            <button className="m-2 h-9 px-2 btn btn-neutral cursor-pointer" onClick={()=>navigate('/')}>Back to Home</button>
+        </header>
+        <table className='w-full table-fixed max-w-[900px]'>
             <thead className="border-b border-stone-200 bg-stone-100 text-sm font-medium text-stone-600">
             <tr>
                 <th className="px-2.5 py-2 text-start font-medium">History ID</th>
@@ -75,6 +79,16 @@ const ListPinjaman = () => {
                 }
             </tbody>
         </table>
+        <dialog id="return-modal" className="modal">
+            <div className="modal-box">
+                <h3 className="font-bold text-lg">Return Confirmation</h3>
+                <p className="py-4">Are you sure want to return this book?</p>
+                <div className="modal-action">
+                    <button className="btn" onClick={()=>document.getElementById('return-modal').close()}>Cancel</button>
+                    <button className="btn" onClick={()=>returnBookByHistId(currHistID)} >Return</button>
+                </div>
+            </div>
+        </dialog>
     </div>
   )
 }

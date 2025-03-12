@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { findUserByUsername } from '../service/service'
 
-
 const Login = () => {
     let navigate = useNavigate()
     const [inputUsername, setInputUsername] = useState("")
@@ -24,11 +23,12 @@ const Login = () => {
         }
     }
     return (
-    <div>
+    <div className='flex flex-col justify-center items-center min-h-screen'>
+        <p className='font-semibold text-2xl mb-10'>Login to Library App</p>
         <div>
             <label for="username" className="block text-sm/6 font-medium text-gray-900">Username</label>
-            <div className="mt-2">
-                <div className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600 w-1/2">
+            <div className="mt-1">
+                <div className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600 max-w-[500px] min-w-[370px]">
                 <input 
                     type="text" 
                     name="username" 
@@ -43,8 +43,8 @@ const Login = () => {
         </div>
         <div>
             <label for="password" className="block text-sm/6 font-medium text-gray-900">Password</label>
-            <div className="mt-2">
-                <div className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600 w-1/2">
+            <div className="mt-1">
+                <div className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600 max-w-[500px] min-w-[370px]">
                 <input 
                     type="password" 
                     name="password" 
@@ -58,8 +58,8 @@ const Login = () => {
             </div>
         </div>
         <div className='flex flex-row'>
-            <button className="my-4 h-10 px-6 font-semibold rounded-md bg-black text-white cursor-pointer" onClick={()=>navigate('/register')} >Register</button>
-            <button className="my-4 h-10 px-6 font-semibold rounded-md bg-black text-white cursor-pointer" onClick={()=>login(inputUsername, inputPassword)}>Login</button>
+            <button className="m-4 h-9 px-2 btn btn-outline cursor-pointer" onClick={()=>navigate('/register')} >Register</button>
+            <button className="m-4 h-9 px-2 btn btn-neutral cursor-pointer" onClick={()=>login(inputUsername, inputPassword)}>Login</button>
         </div>
     </div>
   )
